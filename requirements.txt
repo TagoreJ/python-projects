@@ -4,4 +4,6 @@ reportlab
 pytube
 faster-whisper 
 ffmpeg-python
+git+https://github.com/pytube/pytube
+requests==2.31.0
 
