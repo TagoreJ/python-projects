@@ -2,4 +2,6 @@ streamlit
 youtube-transcript-api 
 reportlab 
 pytube
+faster-whisper 
+ffmpeg-python
 
