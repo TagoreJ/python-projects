@@ -30,12 +30,12 @@ def extract_video_id(url):
             return match.group(1)
     return None
 
-def get_transcript(video_id):
+def get_transcript(video_id, proxies=None):
     """
-    Fetch transcript text for the given YouTube video ID.
+    Fetch transcript text for the given YouTube video ID using optional proxies.
     """
     try:
-        transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+        transcript_list = YouTubeTranscriptApi.get_transcript(video_id, proxies=proxies)
         transcript_text = " ".join([entry['text'] for entry in transcript_list])
         return transcript_text
     except TranscriptsDisabled:
@@ -122,7 +122,20 @@ def download_video(video_id, itag):
         st.error(f"Error downloading video: {str(e)}")
         return None
 
-st.title("YouTube Video Transcript & Download")
+st.title("YouTube Video Transcript & Download with Proxy Support")
+
+# Proxy inputs (optional)
+st.sidebar.header("Proxy Settings (Optional)")
+http_proxy = st.sidebar.text_input("HTTP Proxy (e.g. http://user:pass@host:port)", "")
+https_proxy = st.sidebar.text_input("HTTPS Proxy (e.g. https://user:pass@host:port)", "")
+
+proxies = None
+if http_proxy or https_proxy:
+    proxies = {}
+    if http_proxy:
+        proxies["http"] = http_proxy
+    if https_proxy:
+        proxies["https"] = https_proxy
 
 video_url = st.text_input("Enter YouTube Video URL or Video ID:")
 
@@ -131,7 +144,6 @@ if video_url:
     if video_id:
         st.write(f"Extracted Video ID: **{video_id}**")
 
-        # Show thumbnail with updated parameter
         thumbnail_url = f"https://i.ytimg.com/vi/{video_id}/maxresdefault.jpg"
         st.image(thumbnail_url, caption="Video Thumbnail", use_container_width=True)
 
@@ -144,7 +156,7 @@ if video_url:
             st.error("Could not fetch video title.")
 
         with st.spinner("Fetching transcript..."):
-            transcript = get_transcript(video_id)
+            transcript = get_transcript(video_id, proxies=proxies)
 
         st.subheader("Transcript:")
         st.write(transcript)
