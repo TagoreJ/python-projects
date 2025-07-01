@@ -11,3 +11,4 @@ reportlab
 PyPDF2
 plotly
 pyexcel
+openpyxl
