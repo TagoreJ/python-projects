@@ -307,7 +307,7 @@ def all_dashboard(dfs):
 
     # Add counts for specific sheets
     sheet_counts = {sheet.lower(): len(df) for sheet, df in dfs.items()}
-    st.metric("🌱 Channel Checks", sheet_counts.get('channel checks', 0))
+    st.metric("Channel Checks", sheet_counts.get('channel checks', 0))
     st.metric("✅ Expert Confirmed", sheet_counts.get('expert confirmed', 0))
     st.metric("⭐ Expert Potential", sheet_counts.get('expert potential', 0))
 
@@ -516,91 +516,30 @@ def all_dashboard(dfs):
 st.set_page_config(page_title="Dealer Directory", layout="wide")
 
 # Add your logo here (adjust width as needed)
-st.image("logo.png", width=180)  # <-- Place your logo file in the same directory
+st.image("logo.png", width=200)  # <-- Place your logo file in the same directory
 
-st.markdown("<h2 style='color:#000;'>Dealer Directory</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='color:#FFFFFF;'>Dealer Directory</h2>", unsafe_allow_html=True)
 
-st.success("Welcome! Upload your Excel file to get started.")
+st.success("This tool helps you explore, filter, and manage contact information across various stakeholders including listed companies, market experts, ministry contacts, and more — all in one place.")
 
 # Custom CSS
 st.markdown("""
     <style>
-    /* App background: soft gradient */
-    .stApp {
-        background: linear-gradient(135deg, #f0f4fd 0%, #e0e7ff 100%);
-        color: #000;
-    }
-    /* Sidebar: slightly darker gradient */
-    .stSidebar {
-        background: linear-gradient(135deg, #e0e7ff 0%, #6366f1 100%);
-        color: #000;
-    }
-    /* Headings */
-    .stHeader, .stSubheader, h1, h2, h3, h4 {
-        color: #000 !important;
-        letter-spacing: 0.5px;
-    }
-    /* Card look for DataFrames and widgets */
-    .stDataFrame, .stSelectbox, .stMultiSelect, .stTextInput, .stTextArea, .stNumberInput {
-        background: #fff !important;
-        border-radius: 12px !important;
-        box-shadow: 0 2px 8px #6366f122 !important;
-        color: #1e293b !important;
-    }
     /* Card HTML (custom cards) */
     div[style*="border:2px solid"] {
-        background: linear-gradient(135deg, #6366f1 0%, #f1f5f9 100%) !important;
-        color: #fff !important;
+        background: linear-gradient(135deg, #a5b4fc 0%, #fbcfe8 100%) !important;
+        color: #22223b !important;
         border-radius: 14px !important;
-        box-shadow: 0 4px 16px #6366f133 !important;
+        box-shadow: 0 4px 16px #a5b4fc33 !important;
         border: none !important;
     }
     div[style*="border:2px solid"] strong {
-        color: #fbbf24 !important;
+        color: #be185d !important;
     }
     div[style*="border:2px solid"] span {
-        color: #fff !important;
+        color: #22223b !important;
     }
-    /* Buttons */
-    .stButton>button, .stDownloadButton>button {
-        color: #fff !important;
-        background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%) !important;
-        border: none;
-        border-radius: 8px;
-        padding: 0.5em 1.2em;
-        font-weight: 600;
-        box-shadow: 0 2px 8px #6366f122;
-        transition: background 0.2s;
-    }
-    .stButton>button:hover, .stDownloadButton>button:hover {
-        background: linear-gradient(90deg, #818cf8 0%, #6366f1 100%) !important;
-    }
-    /* Metrics */
-    .stMetric {
-        background: #fff;
-        border-radius: 10px;
-        color: #6366f1 !important;
-        padding: 0.5em 1em;
-        box-shadow: 0 2px 8px #6366f122;
-        border: 1px solid #e0e7ff;
-    }
-    /* Success/info boxes */
-    .stAlert-success {
-        background: linear-gradient(90deg, #bbf7d0 0%, #22d3ee 100%) !important;
-        color: #134e4a !important;
-        border-radius: 10px;
-        font-weight: 500;
-    }
-    .stAlert-info {
-        background: linear-gradient(90deg, #e0e7ff 0%, #f1f5f9 100%) !important;
-        color: #334155 !important;
-        border-radius: 10px;
-        font-weight: 500;
-    }
-    /* Scrollbar for dark sidebar */
-    .stSidebar [data-testid="stVerticalBlock"]::-webkit-scrollbar-thumb {
-        background: #6366f1 !important;
-    }
+    
     </style>
 """, unsafe_allow_html=True)
 
