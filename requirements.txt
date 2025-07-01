@@ -10,6 +10,4 @@ pandas
 reportlab
 PyPDF2
 plotly
-io (BytesIO)
-collections (Counter)
-os
+pyexcel
