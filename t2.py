@@ -339,7 +339,7 @@ def all_dashboard(dfs):
         # Location-wise filter (searches all location-like columns)
         location_cols = [c for c in all_df.columns if any(x in c.lower() for x in ["location", "city", "state", "address"])]
         location_suggestions = get_unique(all_df, location_cols)
-        location_search = st.selectbox("Location Search (All Tabs)", [""] + location_suggestions, key="all_location_search")
+        location_search = st.multiselect("Location Search (All Tabs)", location_suggestions, key="all_location_search")  # <-- changed to multiselect
 
     # Filter by selected sheets
     if selected_sheets:
@@ -361,9 +361,12 @@ def all_dashboard(dfs):
                     mask &= multi_col_name_search(df, name_search, name_cols_sheet)
                     filter_applied = True
 
-            # Sector filter
+            # Sector filter (partial match for any selected sector)
             if sector_search and sector_col in df.columns:
-                mask &= df[sector_col].astype(str).isin(sector_search)
+                mask_sector = pd.Series([False] * len(df))
+                for sector in sector_search:
+                    mask_sector |= df[sector_col].astype(str).str.contains(sector, case=False, na=False)
+                mask &= mask_sector
                 filter_applied = True
 
             # Market Cap filter
@@ -377,7 +380,8 @@ def all_dashboard(dfs):
                 if loc_cols:
                     mask_loc = pd.Series([False] * len(df))
                     for col in loc_cols:
-                        mask_loc |= df[col].astype(str).str.contains(location_search, case=False, na=False)
+                        for loc in location_search:
+                            mask_loc |= df[col].astype(str).str.contains(loc, case=False, na=False)
                     mask &= mask_loc
                     filter_applied = True
 
@@ -608,8 +612,8 @@ if uploaded_file:
                 mask &= df["Name"].astype(str) == name_search
             if designation_search and "Designation" in df.columns:
                 mask &= df["Designation"].astype(str).isin(designation_search)
-            if city_search and "City" in df.columns:
-                mask &= df["City"].astype(str).isin(city_search)
+            if city_search and "Location" in df.columns:
+                mask &= df["Location"].astype(str).isin(city_search)  # <-- FIXED: use "Location" not "City"
             for col, selected in filters.items():
                 if col in df.columns and selected:
                     mask &= df[col].astype(str).isin(selected)
